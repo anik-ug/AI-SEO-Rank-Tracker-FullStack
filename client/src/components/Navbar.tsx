@@ -1,45 +1,87 @@
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useTheme } from "../context/ThemeContext";
-import { Search, BarChart3, History, LogOut, Menu, X, Target, Sun, Moon, ChartNoAxesColumnIcon } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+    BarChart3,
+    History,
+    LogOut,
+    Menu,
+    Moon,
+    Search,
+    Sun,
+    Target,
+    X,
+    ChartNoAxesColumnIcon,
+    Sparkles,
+    Wrench,
+    CircleDollarSign,
+} from "lucide-react";
 import { useState } from "react";
 import { useApp } from "../context/AppContext";
+import { useTheme } from "../context/ThemeContext";
+
+const publicLinks = [
+    { path: "/", label: "Home" },
+    { path: "/features", label: "Features" },
+    { path: "/tools", label: "Tools" },
+    { path: "/how-it-works", label: "How it works" },
+    { path: "/pricing", label: "Pricing" },
+];
+
+const appLinks = [
+    { path: "/dashboard", label: "Dashboard", icon: <BarChart3 size={17} /> },
+    { path: "/analyze", label: "Analyze", icon: <Search size={17} /> },
+    { path: "/rank-tracker", label: "Rank Tracker", icon: <Target size={17} /> },
+    { path: "/history", label: "History", icon: <History size={17} /> },
+];
 
 export default function Navbar() {
-    const { user , logout } = useApp();;
+    const { user, logout } = useApp();
     const { theme, setTheme } = useTheme();
     const navigate = useNavigate();
     const location = useLocation();
     const [mobileOpen, setMobileOpen] = useState(false);
 
+    const isActive = (path: string) => location.pathname === path;
+    const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
     const handleLogout = () => {
-        navigate("/");
         logout();
+        navigate("/");
+        setMobileOpen(false);
     };
 
-    const isActive = (path: string) => location.pathname === path;
-
-    const navLinks = [
-        { path: "/dashboard", label: "Dashboard", icon: <BarChart3 size={18} /> },
-        { path: "/analyze", label: "Analyze", icon: <Search size={18} /> },
-        { path: "/rank-tracker", label: "Rank Tracker", icon: <Target size={18} /> },
-        { path: "/history", label: "History", icon: <History size={18} /> },
-    ];
-
     return (
-        <nav className="fixed top-0 w-full bg-background/70 backdrop-blur-lg z-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6">
-                <div className="flex items-center justify-between h-16">
-                    {/* Logo */}
-                    <Link to="/" className="flex items-center gap-2 group">
-                        <ChartNoAxesColumnIcon />
-                        <span className="text-xl tracking-tight text-foreground">Rank Pilot</span>
+        <header className="fixed inset-x-0 top-0 z-50 px-3 sm:px-5 pt-3">
+            <nav className="mx-auto max-w-7xl rounded-2xl border border-border/80 bg-background/80 shadow-sm backdrop-blur-xl">
+                <div className="flex h-16 items-center justify-between px-4 sm:px-5">
+                    <Link to="/" className="flex items-center gap-2.5 shrink-0" onClick={() => setMobileOpen(false)}>
+                        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-background shadow-sm">
+                            <ChartNoAxesColumnIcon size={19} />
+                        </span>
+                        <span className="text-[17px] font-semibold tracking-tight text-foreground">RankPilot</span>
                     </Link>
 
-                    {/* Desktop nav */}
+                    {!user && (
+                        <div className="hidden lg:flex items-center gap-1 rounded-xl border border-border/70 bg-card/60 p-1">
+                            {publicLinks.map((link) => (
+                                <Link
+                                    key={link.path}
+                                    to={link.path}
+                                    className={`rounded-lg px-3.5 py-2 text-[13px] font-medium transition-colors ${isActive(link.path) ? "bg-foreground text-background" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
+                        </div>
+                    )}
+
                     {user && (
-                        <div className="hidden md:flex items-center gap-1">
-                            {navLinks.map((link) => (
-                                <Link key={link.path} to={link.path} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-all ${isActive(link.path) ? "bg-accent/5 text-accent font-medium" : "text-muted-foreground hover:text-foreground hover:bg-muted/80"}`}>
+                        <div className="hidden lg:flex items-center gap-1 rounded-xl border border-border/70 bg-card/60 p-1">
+                            {appLinks.map((link) => (
+                                <Link
+                                    key={link.path}
+                                    to={link.path}
+                                    className={`flex items-center gap-2 rounded-lg px-3.5 py-2 text-[13px] font-medium transition-colors ${isActive(link.path) ? "bg-accent/10 text-accent" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}
+                                >
                                     {link.icon}
                                     {link.label}
                                 </Link>
@@ -47,102 +89,84 @@ export default function Navbar() {
                         </div>
                     )}
 
-                    {/* Right side */}
-                    <div className="hidden md:flex items-center gap-3">
-                        <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-full transition-colors flex items-center justify-center" aria-label="Toggle theme">
-                            {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+                    <div className="hidden md:flex items-center gap-2">
+                        <button
+                            onClick={() => setTheme(isDark ? "light" : "dark")}
+                            className="flex h-9 w-9 items-center justify-center rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                            aria-label="Toggle theme"
+                        >
+                            {isDark ? <Sun size={17} /> : <Moon size={17} />}
                         </button>
 
                         {user ? (
                             <>
-                                <div className="flex items-center gap-2 px-2 py-1.5 rounded-full border border-border bg-card text-sm">
-                                    <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-xs font-bold" style={{ color: "var(--background)" }}>
+                                <div className="flex items-center gap-2 rounded-xl border border-border bg-card px-2.5 py-1.5">
+                                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-foreground text-xs font-bold text-background">
                                         {user.name.charAt(0).toUpperCase()}
                                     </div>
-                                    <span className="text-foreground font-medium">{user.name}</span>
-                                    <span className="px-2 py-0.5 rounded-full text-[10px] font-medium uppercase bg-accent/10 border border-accent/15 text-accent">{user.plan}</span>
+                                    <div className="hidden xl:block leading-tight">
+                                        <div className="text-xs font-semibold text-foreground">{user.name}</div>
+                                        <div className="text-[10px] text-muted-foreground capitalize">{user.plan}</div>
+                                    </div>
                                 </div>
-                                <button onClick={handleLogout} className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-all">
-                                    <LogOut size={16} />
+                                <button onClick={handleLogout} className="flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground">
+                                    <LogOut size={15} />
                                     Logout
                                 </button>
                             </>
                         ) : (
                             <>
-                                <Link to="/login" className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-                                    Log In
+                                <Link to="/login" className="rounded-xl px-3.5 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground">
+                                    Log in
                                 </Link>
-                                <Link to="/register" className="px-5 py-2 rounded-full bg-primary text-sm transition-opacity" style={{ color: "var(--background)" }}>
-                                    Get Started
+                                <Link to="/register" className="flex items-center gap-1.5 rounded-xl bg-foreground px-4 py-2 text-sm font-semibold text-background shadow-sm hover:opacity-90">
+                                    Get started <Sparkles size={14} />
                                 </Link>
                             </>
                         )}
                     </div>
 
-                    {/* Mobile toggle container */}
-                    <div className="flex items-center gap-2 md:hidden">
-                        <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-full transition-colors">
-                            {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+                    <div className="flex md:hidden items-center gap-1">
+                        <button onClick={() => setTheme(isDark ? "light" : "dark")} className="h-9 w-9 rounded-xl text-muted-foreground hover:bg-muted flex items-center justify-center">
+                            {isDark ? <Sun size={17} /> : <Moon size={17} />}
                         </button>
-                        <button className="text-muted-foreground hover:text-foreground p-2" onClick={() => setMobileOpen(!mobileOpen)}>
-                            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+                        <button onClick={() => setMobileOpen(!mobileOpen)} className="h-9 w-9 rounded-xl text-muted-foreground hover:bg-muted flex items-center justify-center" aria-label="Menu">
+                            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
                         </button>
                     </div>
                 </div>
-            </div>
 
-            {/* Mobile menu */}
-            {mobileOpen && (
-                <div className="md:hidden border-b border-border bg-background origin-top">
-                    <div className="px-4 py-3 space-y-1">
-                        {user ? (
+                {mobileOpen && (
+                    <div className="border-t border-border px-4 py-4 lg:hidden">
+                        {!user ? (
                             <>
-                                <div className="flex items-center gap-3 px-3 py-3 mb-2 bg-muted rounded-lg">
-                                    <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-sm font-bold" style={{ color: "var(--background)" }}>
-                                        {user.name.charAt(0).toUpperCase()}
-                                    </div>
-                                    <div>
-                                        <div className="text-sm font-semibold text-foreground">{user.name}</div>
-                                        <div className="text-xs text-muted-foreground">{user.email}</div>
-                                    </div>
-                                </div>
-                                <div className="py-2 space-y-1">
-                                    {navLinks.map((link) => (
-                                        <Link
-                                            key={link.path}
-                                            to={link.path}
-                                            onClick={() => setMobileOpen(false)}
-                                            className={`flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all ${isActive(link.path) ? "bg-accent/10 text-accent" : "text-muted-foreground hover:text-foreground hover:bg-muted"}`}
-                                        >
-                                            {link.icon}
+                                <div className="grid grid-cols-2 gap-2">
+                                    {publicLinks.map((link) => (
+                                        <Link key={link.path} to={link.path} onClick={() => setMobileOpen(false)} className={`rounded-xl px-3 py-2.5 text-sm ${isActive(link.path) ? "bg-foreground text-background" : "bg-muted text-muted-foreground"}`}>
                                             {link.label}
                                         </Link>
                                     ))}
                                 </div>
-                                <button
-                                    onClick={() => {
-                                        handleLogout();
-                                        setMobileOpen(false);
-                                    }}
-                                    className="flex items-center gap-3 px-3 py-3 rounded-lg text-sm text-danger hover:bg-danger/10 w-full mt-2"
-                                >
-                                    <LogOut size={18} />
-                                    Logout
-                                </button>
+                                <div className="mt-3 grid grid-cols-2 gap-2">
+                                    <Link to="/login" onClick={() => setMobileOpen(false)} className="rounded-xl border border-border py-2.5 text-center text-sm font-medium">Log in</Link>
+                                    <Link to="/register" onClick={() => setMobileOpen(false)} className="rounded-xl bg-foreground py-2.5 text-center text-sm font-semibold text-background">Get started</Link>
+                                </div>
                             </>
                         ) : (
-                            <div className="py-2 space-y-2">
-                                <Link to="/login" onClick={() => setMobileOpen(false)} className="block px-3 py-3 text-sm font-medium text-foreground text-center rounded-lg hover:bg-muted">
-                                    Log In
-                                </Link>
-                                <Link to="/register" onClick={() => setMobileOpen(false)} className="block px-3 py-3 text-sm font-semibold text-center rounded-lg bg-primary" style={{ color: "var(--background)" }}>
-                                    Get Started
-                                </Link>
+                            <div className="space-y-1">
+                                {appLinks.map((link) => (
+                                    <Link key={link.path} to={link.path} onClick={() => setMobileOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm ${isActive(link.path) ? "bg-accent/10 text-accent" : "text-muted-foreground hover:bg-muted"}`}>
+                                        {link.icon}{link.label}
+                                    </Link>
+                                ))}
+                                <button onClick={handleLogout} className="mt-2 flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm text-danger hover:bg-danger/10">
+                                    <LogOut size={17} /> Logout
+                                </button>
                             </div>
                         )}
                     </div>
-                </div>
-            )}
-        </nav>
+                )}
+            </nav>
+        </header>
     );
 }

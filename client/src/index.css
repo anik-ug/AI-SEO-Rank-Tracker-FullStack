@@ -222,3 +222,36 @@ button {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--scroll-thumb-hover);
 }
+
+/* RankPilot public marketing system */
+.eyebrow {
+    color: var(--accent);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.section-title {
+    margin-top: 0.8rem;
+    font-size: clamp(2.3rem, 5vw, 4.5rem);
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+    font-weight: 600;
+    color: var(--foreground);
+}
+
+.section-copy {
+    max-width: 40rem;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--muted-foreground);
+}
+
+::selection {
+    background: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+html {
+    scroll-behavior: smooth;
+}
