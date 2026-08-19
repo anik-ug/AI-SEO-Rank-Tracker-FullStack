@@ -1,4 +1,4 @@
- {
+{
   "name": "server",
   "version": "1.0.0",
   "main": "server.js",
@@ -22,6 +22,7 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.6.3",
     "node-cron": "^4.2.1",
+    "nodemailer": "^9.0.5",
     "playwright-core": "^1.60.0"
   },
   "devDependencies": {

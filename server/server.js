@@ -6,6 +6,7 @@ import authRouter from "./routes/authRoutes.js";
 import rankRouter from "./routes/rankRoutes.js";
 import analysisRouter from "./routes/analysisRoutes.js";
 import { startRankTrackingCron } from "./cron/rankTrackingCron.js";
+import contactRouter from "./routes/contactRoutes.js";
 
 connectDB();
 
@@ -18,6 +19,7 @@ app.get("/", (req, res) => res.send("Server is running"));
 app.use("/api/auth", authRouter);
 app.use("/api/rank", rankRouter);
 app.use("/api/analysis", analysisRouter);
+app.use("/api/contact", contactRouter);
 
 // Start cron jobs
 startRankTrackingCron();
