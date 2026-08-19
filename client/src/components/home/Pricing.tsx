@@ -40,7 +40,7 @@ export default function Pricing() {
                         </div>
                         <h3 className="text-xl font-semibold mb-1 text-foreground">Pro</h3>
                         <div className="flex items-baseline gap-1 mb-6">
-                            <span className="text-4xl font-bold text-primary">$19</span>
+                            <span className="text-4xl font-bold text-primary">₹499</span>
                             <span className="text-muted-foreground">/month</span>
                         </div>
                         <ul className="space-y-3 mb-8 flex-1">

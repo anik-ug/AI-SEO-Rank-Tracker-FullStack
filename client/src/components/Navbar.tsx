@@ -55,9 +55,13 @@ export default function Navbar() {
                 <div className="flex h-16 items-center justify-between px-4 sm:px-5">
                     <Link to="/" className="flex items-center gap-2.5 shrink-0" onClick={() => setMobileOpen(false)}>
                         <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-background shadow-sm">
-                            <ChartNoAxesColumnIcon size={19} />
+                            <img
+                                src="/favicon.svg"
+                                alt="SeoRanker"
+                                className="h-5 w-5"
+                            />
                         </span>
-                        <span className="text-[17px] font-semibold tracking-tight text-foreground">RankPilot</span>
+                        <span className="text-[17px] font-semibold tracking-tight text-foreground">SeoRanker</span>
                     </Link>
 
                     {!user && (
