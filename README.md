@@ -130,9 +130,6 @@ AI-SEO-Rank-Tracker/
 │   ├── package.json
 │   └── package-lock.json
 │
-├── docs/
-│   ├── CHANGELOG.md
-│   └── CONTRIBUTING.md
 │
 ├── .gitignore
 ├── README.md
