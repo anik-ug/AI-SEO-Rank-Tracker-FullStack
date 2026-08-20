@@ -1,4 +1,5 @@
-import { FormEvent, useState } from "react";
+import type { FormEvent } from "react";
+import { useState } from "react";
 import { Mail, MessageSquare, Send } from "lucide-react";
 import { toast } from "react-hot-toast";
 

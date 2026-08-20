@@ -111,7 +111,9 @@ export default function Dashboard() {
                             <BarChart3Icon size={22} />
                         </div>
                         <div>
-                            <p className="text-2xl font-bold text-foreground">{user?.plan === "free" ? `${5 - (user?.analysisCount || 0)}` : "∞"}</p>
+                            <p className="text-2xl font-bold text-foreground">
+                                {user?.plan === "free" ? usage.remainingToday : "∞"}
+                            </p>
                             <p className="text-xs text-muted-foreground">Scans Left Today</p>
                         </div>
                     </div>

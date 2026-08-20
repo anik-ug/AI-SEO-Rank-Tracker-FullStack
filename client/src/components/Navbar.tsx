@@ -9,10 +9,7 @@ import {
     Sun,
     Target,
     X,
-    ChartNoAxesColumnIcon,
     Sparkles,
-    Wrench,
-    CircleDollarSign,
 } from "lucide-react";
 import { useState } from "react";
 import { useApp } from "../context/AppContext";

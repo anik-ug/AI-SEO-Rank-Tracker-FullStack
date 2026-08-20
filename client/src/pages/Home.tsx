@@ -1,4 +1,5 @@
-import { FormEvent, useState } from "react";
+import type { FormEvent } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
     ArrowRight,
@@ -7,12 +8,14 @@ import {
     ChevronRight,
     Gauge,
     Globe2,
-    LineChart,
     Search,
     ShieldCheck,
     Sparkles,
     Target,
     Zap,
+    TrendingUp,
+    AlertTriangle,
+    Clock,
 } from "lucide-react";
 
 const features = [
@@ -66,29 +69,455 @@ export default function Home() {
                         <p className="mt-4 text-xs text-muted-foreground">No credit card required · Start with a free analysis</p>
                     </div>
 
-                    <div className="mx-auto mt-16 max-w-5xl">
+                    <div className="mx-auto mt-16 max-w-6xl">
                         <div className="relative overflow-hidden rounded-[28px] border border-border bg-card shadow-2xl shadow-black/10">
-                            <div className="flex items-center justify-between border-b border-border bg-muted/30 px-4 py-3">
-                                <div className="flex gap-1.5"><span className="h-2.5 w-2.5 rounded-full bg-red-400/70" /><span className="h-2.5 w-2.5 rounded-full bg-yellow-400/70" /><span className="h-2.5 w-2.5 rounded-full bg-green-400/70" /></div>
-                                <div className="rounded-lg border border-border bg-background px-5 py-1.5 text-[10px] text-muted-foreground">app.SeoRanker.local/dashboard</div>
+
+                            {/* Browser top bar */}
+                            <div className="flex items-center justify-between border-b border-border bg-muted/30 px-5 py-3">
+                                <div className="flex gap-1.5">
+                                    <span className="h-2.5 w-2.5 rounded-full bg-red-400/70" />
+                                    <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/70" />
+                                    <span className="h-2.5 w-2.5 rounded-full bg-green-400/70" />
+                                </div>
+
+                                <div className="rounded-lg border border-border bg-background px-8 py-1.5 text-[10px] text-muted-foreground">
+                                    app.SeoRanker.local/dashboard
+                                </div>
+
                                 <div className="w-12" />
                             </div>
-                            <div className="grid gap-0 md:grid-cols-[190px_1fr]">
-                                <aside className="hidden border-r border-border bg-muted/20 p-4 md:block">
-                                    <div className="mb-7 flex items-center gap-2 text-sm font-semibold"><span className="flex h-7 w-7 items-center justify-center rounded-lg bg-foreground text-background"><BarChart3 size={14} /></span> SeoRanker</div>
-                                    <div className="space-y-1 text-xs">
-                                        {['Overview', 'Analyze', 'Rank Tracker', 'Reports', 'History'].map((x, i) => <div key={x} className={`rounded-lg px-3 py-2.5 ${i === 0 ? 'bg-accent/10 text-accent font-medium' : 'text-muted-foreground'}`}>{x}</div>)}
+
+                            {/* Dashboard */}
+                            <div className="bg-background p-5 sm:p-7">
+
+                                {/* Dashboard heading */}
+                                <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+
+                                    <div>
+                                        <h3 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+                                            Welcome back,{" "}
+                                            <span className="text-accent">test</span>
+                                        </h3>
+
+                                        <p className="mt-1.5 text-sm text-muted-foreground">
+                                            Analyze websites and boost your SEO performance.
+                                        </p>
                                     </div>
-                                </aside>
-                                <div className="p-5 sm:p-7">
-                                    <div className="flex items-end justify-between"><div><p className="text-xs text-muted-foreground">Website overview</p><h3 className="mt-1 text-xl font-semibold">Your SEO health</h3></div><span className="rounded-full bg-emerald-500/10 px-3 py-1.5 text-xs font-semibold text-emerald-500">Excellent</span></div>
-                                    <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                                        {[['87','SEO score'],['42','Keywords tracked'],['+18%','Visibility']].map(([value,label]) => <div key={label} className="rounded-2xl border border-border bg-background p-4"><div className="text-2xl font-semibold tracking-tight">{value}</div><div className="mt-1 text-xs text-muted-foreground">{label}</div></div>)}
+
+                                </div>
+
+                                {/* Analyze bar */}
+                                <div className="mt-7 max-w-2xl rounded-2xl border border-border bg-card p-1.5">
+                                    <div className="flex items-center gap-3">
+                                        <div className="flex min-h-12 flex-1 items-center gap-3 px-3">
+                                            <Search
+                                                size={18}
+                                                className="shrink-0 text-muted-foreground"
+                                            />
+
+                                            <span className="text-sm text-muted-foreground">
+                                                Enter a URL to analyze...
+                                            </span>
+                                        </div>
+
+                                        <button className="flex min-h-11 items-center gap-2 rounded-xl bg-foreground px-5 text-sm font-semibold text-background">
+                                            Analyze
+                                            <ArrowRight size={15} />
+                                        </button>
                                     </div>
-                                    <div className="mt-3 grid gap-3 lg:grid-cols-[1.35fr_.65fr]">
-                                        <div className="rounded-2xl border border-border bg-background p-5"><div className="flex justify-between"><div><p className="text-xs text-muted-foreground">Search visibility</p><p className="mt-1 font-semibold">Growing steadily</p></div><LineChart size={18} className="text-accent" /></div><div className="mt-7 flex h-28 items-end gap-2">{[35,48,42,62,55,72,68,83,76,94,88,100].map((h,i)=><div key={i} className="flex-1 rounded-t bg-accent/20" style={{height:`${h}%`}}><div className="h-full rounded-t bg-accent/70" style={{height:`${Math.max(20,h-18)}%`}} /></div>)}</div></div>
-                                        <div className="rounded-2xl border border-border bg-background p-5"><p className="text-xs text-muted-foreground">Priority issues</p><div className="mt-5 space-y-3">{[['3','Critical','text-red-500'],['7','Warnings','text-amber-500'],['12','Opportunities','text-accent']].map(([n,l,c])=><div key={l} className="flex items-center justify-between"><span className="text-xs text-muted-foreground">{l}</span><span className={`font-semibold ${c}`}>{n}</span></div>)}</div></div>
+                                </div>
+
+                                {/* Stats */}
+                                <div className="mt-8 grid gap-4 md:grid-cols-3">
+
+                                    {/* Total scans */}
+                                    <div className="rounded-2xl border border-border bg-card p-5">
+                                        <div className="flex items-center gap-4">
+
+                                            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-muted text-foreground">
+                                                <Globe2 size={21} />
+                                            </div>
+
+                                            <div>
+                                                <div className="text-2xl font-semibold tracking-tight">
+                                                    6
+                                                </div>
+
+                                                <div className="mt-0.5 text-xs text-muted-foreground">
+                                                    Total Scans
+                                                </div>
+                                            </div>
+
+                                        </div>
                                     </div>
+
+                                    {/* Average score */}
+                                    <div className="rounded-2xl border border-border bg-card p-5">
+                                        <div className="flex items-center gap-4">
+
+                                            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-muted text-foreground">
+                                                <TrendingUp size={21} />
+                                            </div>
+
+                                            <div>
+                                                <div className="text-2xl font-semibold tracking-tight text-amber-500">
+                                                    77
+                                                </div>
+
+                                                <div className="mt-0.5 text-xs text-muted-foreground">
+                                                    Avg Score
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    {/* Scans left */}
+                                    <div className="rounded-2xl border border-border bg-card p-5">
+                                        <div className="flex items-center gap-4">
+
+                                            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                                                <BarChart3 size={21} />
+                                            </div>
+
+                                            <div>
+                                                <div className="text-2xl font-semibold tracking-tight">
+                                                    5
+                                                </div>
+
+                                                <div className="mt-0.5 text-xs text-muted-foreground">
+                                                    Scans Left Today
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                {/* Recent analyses heading */}
+                                <div className="mt-10 flex items-center justify-between">
+                                    <h3 className="text-lg font-semibold">
+                                        Recent Analyses
+                                    </h3>
+
+                                    <span className="flex items-center gap-1 text-xs font-medium text-muted-foreground">
+                                        View All
+                                        <ArrowRight size={13} />
+                                    </span>
+                                </div>
+
+                                {/* Recent analysis cards */}
+                                <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+
+                                    {/* Card 1 */}
+                                    <div className="rounded-2xl border border-border bg-card p-5">
+
+                                        <div className="flex items-start justify-between">
+                                            <div>
+                                                <h4 className="text-sm font-semibold">
+                                                    vercel.com
+                                                </h4>
+
+                                                <p className="mt-1 text-xs text-muted-foreground">
+                                                    https://vercel.com/
+                                                </p>
+                                            </div>
+
+                                            <div className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-emerald-500 text-sm font-semibold text-emerald-500">
+                                                82
+                                            </div>
+                                        </div>
+
+                                        <div className="mt-7 grid grid-cols-4 gap-3">
+
+                                            <div>
+                                                <div className="text-sm font-semibold text-amber-500">
+                                                    75
+                                                </div>
+                                                <div className="text-[10px] text-muted-foreground">
+                                                    SEO
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className="text-sm font-semibold text-emerald-500">
+                                                    95
+                                                </div>
+                                                <div className="text-[10px] text-muted-foreground">
+                                                    Perf
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className="text-sm font-semibold text-emerald-500">
+                                                    88
+                                                </div>
+                                                <div className="text-[10px] text-muted-foreground">
+                                                    A11y
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className="text-sm font-semibold text-emerald-500">
+                                                    90
+                                                </div>
+                                                <div className="text-[10px] text-muted-foreground">
+                                                    BP
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div className="mt-7 flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                                            <Clock size={12} />
+                                            19/8/2026
+                                        </div>
+
+                                    </div>
+
+                                    {/* Card 2 */}
+                                    <div className="rounded-2xl border border-border bg-card p-5">
+
+                                        <div className="flex items-start justify-between">
+
+                                            <div>
+                                                <h4 className="text-sm font-semibold">
+                                                    vercel.com
+                                                </h4>
+
+                                                <p className="mt-1 text-xs text-muted-foreground">
+                                                    https://vercel.com/
+                                                </p>
+                                            </div>
+
+                                            <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-border text-red-500">
+                                                <AlertTriangle size={18} />
+                                            </div>
+
+                                        </div>
+
+                                        <div className="mt-7 flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                                            <Clock size={12} />
+                                            19/8/2026
+                                        </div>
+
+                                    </div>
+
+                                    {/* Card 3 */}
+                                    <div className="rounded-2xl border border-border bg-card p-5">
+
+                                        <div className="flex items-start justify-between">
+                                            <div>
+                                                <h4 className="text-sm font-semibold">
+                                                    city-care-chi.vercel.app
+                                                </h4>
+
+                                                <p className="mt-1 text-xs text-muted-foreground">
+                                                    https://city-care-chi.vercel.app/
+                                                </p>
+                                            </div>
+
+                                            <div className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-amber-500 text-sm font-semibold text-amber-500">
+                                                62
+                                            </div>
+                                        </div>
+
+                                        <div className="mt-7 grid grid-cols-4 gap-3">
+
+                                            <div>
+                                                <div className="text-sm font-semibold text-red-500">
+                                                    40
+                                                </div>
+                                                <div className="text-[10px] text-muted-foreground">
+                                                    SEO
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className="text-sm font-semibold text-emerald-500">
+                                                    95
+                                                </div>
+                                                <div className="text-[10px] text-muted-foreground">
+                                                    Perf
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className="text-sm font-semibold text-amber-500">
+                                                    70
+                                                </div>
+                                                <div className="text-[10px] text-muted-foreground">
+                                                    A11y
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className="text-sm font-semibold text-amber-500">
+                                                    65
+                                                </div>
+                                                <div className="text-[10px] text-muted-foreground">
+                                                    BP
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div className="mt-7 flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                                            <Clock size={12} />
+                                            19/8/2026
+                                        </div>
+
+                                    </div>
+
+                                    {/* Card 4 */}
+                                    <div className="rounded-2xl border border-border bg-card p-5">
+
+                                        <div className="flex items-start justify-between">
+                                            <div>
+                                                <h4 className="text-sm font-semibold">
+                                                    city-care-chi.vercel.app
+                                                </h4>
+
+                                                <p className="mt-1 text-xs text-muted-foreground">
+                                                    https://city-care-chi.vercel.app/
+                                                </p>
+                                            </div>
+
+                                            <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-border text-red-500">
+                                                <AlertTriangle size={18} />
+                                            </div>
+                                        </div>
+
+                                        <div className="mt-7 flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                                            <Clock size={12} />
+                                            19/8/2026
+                                        </div>
+
+                                    </div>
+
+                                    {/* Card 5 */}
+                                    <div className="rounded-2xl border border-border bg-card p-5">
+
+                                        <div className="flex items-start justify-between">
+                                            <div>
+                                                <h4 className="text-sm font-semibold">
+                                                    github.com
+                                                </h4>
+
+                                                <p className="mt-1 text-xs text-muted-foreground">
+                                                    https://github.com/
+                                                </p>
+                                            </div>
+
+                                            <div className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-amber-500 text-sm font-semibold text-amber-500">
+                                                78
+                                            </div>
+                                        </div>
+
+                                        <div className="mt-7 grid grid-cols-4 gap-3">
+
+                                            <div>
+                                                <div className="text-sm font-semibold text-emerald-500">
+                                                    82
+                                                </div>
+                                                <div className="text-[10px] text-muted-foreground">
+                                                    SEO
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className="text-sm font-semibold text-emerald-500">
+                                                    90
+                                                </div>
+                                                <div className="text-[10px] text-muted-foreground">
+                                                    Perf
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className="text-sm font-semibold text-amber-500">
+                                                    65
+                                                </div>
+                                                <div className="text-[10px] text-muted-foreground">
+                                                    A11y
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className="text-sm font-semibold text-emerald-500">
+                                                    85
+                                                </div>
+                                                <div className="text-[10px] text-muted-foreground">
+                                                    BP
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    {/* Card 6 */}
+                                    <div className="rounded-2xl border border-border bg-card p-5">
+
+                                        <div className="flex items-start justify-between">
+                                            <div>
+                                                <h4 className="text-sm font-semibold">
+                                                    prebuiltui.com
+                                                </h4>
+
+                                                <p className="mt-1 text-xs text-muted-foreground">
+                                                    https://prebuiltui.com/
+                                                </p>
+                                            </div>
+
+                                            <div className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-emerald-500 text-sm font-semibold text-emerald-500">
+                                                85
+                                            </div>
+                                        </div>
+
+                                        <div className="mt-7 grid grid-cols-4 gap-3">
+
+                                            <div>
+                                                <div className="text-sm font-semibold text-emerald-500">
+                                                    80
+                                                </div>
+                                                <div className="text-[10px] text-muted-foreground">
+                                                    SEO
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className="text-sm font-semibold text-emerald-500">
+                                                    90
+                                                </div>
+                                                <div className="text-[10px] text-muted-foreground">
+                                                    Perf
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className="text-sm font-semibold text-emerald-500">
+                                                    95
+                                                </div>
+                                                <div className="text-[10px] text-muted-foreground">
+                                                    A11y
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div className="text-sm font-semibold text-emerald-500">
+                                                    88
+                                                </div>
+                                                <div className="text-[10px] text-muted-foreground">
+                                                    BP
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

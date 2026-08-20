@@ -2,10 +2,44 @@ import Analysis from "../models/Analysis.js";
 import { analyzeSeoData } from "../services/geminiService.js";
 import { scrapeUrl } from "../services/scraperService.js";
 
+const DAILY_ANALYSIS_LIMIT = 5;
+
+const getTodayRange = () => {
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);
+
+    const end = new Date(start);
+    end.setDate(end.getDate() + 1);
+
+    return { start, end };
+};
+
 // Analyze a URL
 export const analyzeUrl = async (req, res) => {
     try {
         const { url } = req.body;
+
+                // Check today's analysis usage
+                const { start, end } = getTodayRange();
+
+                const todayCount = await Analysis.countDocuments({
+                    userId: req.userId,
+                    createdAt: {
+                        $gte: start,
+                        $lt: end,
+                    },
+                });
+
+                if (todayCount >= DAILY_ANALYSIS_LIMIT) {
+                    return res.status(403).json({
+                        success: false,
+                        message: "Daily analysis limit reached",
+                        limitReached: true,
+                        used: todayCount,
+                        limit: DAILY_ANALYSIS_LIMIT,
+                        remaining: 0,
+                    });
+                }
 
         if (!url) return res.status(400).json({ success: false, message: "URL is required" });
 
@@ -115,5 +149,37 @@ export const deleteAnalysis = async (req, res) => {
     } catch (error) {
         console.error("Delete analysis error:", error.message);
         res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+
+// Get today's analysis usage
+export const getDailyUsage = async (req, res) => {
+    try {
+        const { start, end } = getTodayRange();
+
+        const used = await Analysis.countDocuments({
+            userId: req.userId,
+            createdAt: {
+                $gte: start,
+                $lt: end,
+            },
+        });
+
+        const limit = DAILY_ANALYSIS_LIMIT;
+        const remaining = Math.max(limit - used, 0);
+
+        res.json({
+            success: true,
+            used,
+            limit,
+            remaining,
+        });
+    } catch (error) {
+        console.error("Get daily usage error:", error.message);
+
+        res.status(500).json({
+            success: false,
+            message: "Server error",
+        });
     }
 };

@@ -1,4 +1,4 @@
-import { ArrowRight, Check, Gauge, Globe2, Search, ShieldCheck, Sparkles, Target, Zap } from "lucide-react";
+import { ArrowRight, Check, Gauge, Globe2, Search, ShieldCheck, Sparkles, Target } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const items = [
