@@ -504,35 +504,6 @@ Potential improvements include:
 - ☁️ Production cloud deployment
 
 ---
-
-## 📸 Screenshots
-
-Add screenshots of the main application screens here.
-
-Recommended screenshots:
-
-```text
-docs/screenshots/
-├── dashboard.png
-├── seo-analysis.png
-├── keyword-tracking.png
-└── analysis-history.png
-```
-
-Then embed them:
-
-```markdown
-![Dashboard](docs/screenshots/dashboard.png)
-
-![SEO Analysis](docs/screenshots/seo-analysis.png)
-
-![Keyword Tracking](docs/screenshots/keyword-tracking.png)
-
-![Analysis History](docs/screenshots/analysis-history.png)
-```
-
----
-
 ## 🌍 Live Demo
 
 Coming soon.
@@ -540,19 +511,7 @@ Coming soon.
 Once deployed, add your production URL here:
 
 ```text
-https://your-live-domain.com
-```
-
----
-
-## 📚 Documentation
-
-Additional project documentation is available in the `docs/` directory.
-
-```text
-docs/
-├── CHANGELOG.md
-└── CONTRIBUTING.md
+[https://your-live-domain.com](https://ai-seo-rank-tracker-full-stack.vercel.app/)
 ```
 
 ---
