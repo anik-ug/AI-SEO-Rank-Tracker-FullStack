@@ -506,13 +506,7 @@ Potential improvements include:
 ---
 ## 🌍 Live Demo
 
-Coming soon.
-
-Once deployed, add your production URL here:
-
-```text
-[https://your-live-domain.com](https://ai-seo-rank-tracker-full-stack.vercel.app/)
-```
+https://ai-seo-rank-tracker-full-stack.vercel.app/
 
 ---
 
