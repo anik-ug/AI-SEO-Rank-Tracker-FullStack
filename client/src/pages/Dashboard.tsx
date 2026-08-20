@@ -48,7 +48,26 @@ export default function Dashboard() {
     };
 
     const completedAnalyses = analyses.filter((a) => a.status === "completed");
-    const avgScore = completedAnalyses.length ? Math.round(completedAnalyses.reduce((sum, a) => sum + a.overallScore, 0) / completedAnalyses.length) : 0;
+
+    const avgScore = completedAnalyses.length
+
+        ? Math.round(
+
+            completedAnalyses.reduce(
+
+                (sum, a) => sum + a.overallScore,
+
+                0
+
+            ) / completedAnalyses.length
+
+        )
+
+        : 0;
+
+    const DAILY_ANALYSIS_LIMIT = 5;
+
+    const remainingToday = Math.max(DAILY_ANALYSIS_LIMIT - analyses.length, 0);
     // const totalIssues = completedAnalyses.length;
 
     const getScoreClass = (s: number) => {
@@ -112,7 +131,7 @@ export default function Dashboard() {
                         </div>
                         <div>
                             <p className="text-2xl font-bold text-foreground">
-                                {user?.plan === "free" ? usage.remainingToday : "∞"}
+                                {user?.plan === "free" ? remainingToday : "∞"}
                             </p>
                             <p className="text-xs text-muted-foreground">Scans Left Today</p>
                         </div>
