@@ -57,7 +57,7 @@ interface AnalysisData {
 }
 
 export default function Report() {
-    const { api, fetchOrFallback } = useApp();
+    const { fetchOrFallback } = useApp();
     const { id } = useParams();
     const [analysis, setAnalysis] = useState<AnalysisData | null>(null);
     const [loading, setLoading] = useState(true);
