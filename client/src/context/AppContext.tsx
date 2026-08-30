@@ -15,6 +15,7 @@ interface AppContextType {
     token: string | null;
     loading: boolean;
     api: AxiosInstance;
+    fetchOrFallback: <T = any>(path: string, fallback?: T) => Promise<{ success: boolean; data?: any; demo?: boolean }>;
     login: (email: string, password: string) => Promise<{ success: boolean; message?: string }>;
     register: (name: string, email: string, password: string) => Promise<{ success: boolean; message?: string }>;
     logout: () => void;
@@ -44,6 +45,22 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
         return config;
     });
+
+    // Centralized fetch with fallback support for demo/local assets
+    const fetchOrFallback = async <T,>(path: string, fallback?: T): Promise<{ success: boolean; data?: T | any; demo?: boolean }> => {
+        try {
+            const res = await api.get(path);
+            if (res.data && res.data.success !== false) return { success: true, data: res.data };
+            // If backend returned success: false, fallthrough to fallback
+        } catch (err) {
+            // network/server error — return fallback if provided
+            if (fallback !== undefined) return { success: true, data: fallback, demo: true };
+            return { success: false };
+        }
+
+        if (fallback !== undefined) return { success: true, data: fallback, demo: true };
+        return { success: false };
+    };
 
     const loadUser = async () => {
         if (!token) {
@@ -103,7 +120,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         localStorage.removeItem("token");
     };
 
-    const value = { user, token, loading, api, login, register, logout };
+    const value = { user, token, loading, api, fetchOrFallback, login, register, logout };
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }

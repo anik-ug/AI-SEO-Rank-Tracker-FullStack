@@ -4,6 +4,7 @@ import ScoreGauge from "../components/ScoreGauge";
 import IssueCard from "../components/IssueCard";
 import { ArrowLeft, Globe, Clock, FileText, Image, Link2, Heading, Tag, AlertCircle, ExternalLink, Type, Search } from "lucide-react";
 import { useApp } from "../context/AppContext";
+import { dummyAnalysisData, dummyWebsiteAnalysis } from "../assets/assets";
 
 interface AnalysisData {
     _id: string;
@@ -56,7 +57,7 @@ interface AnalysisData {
 }
 
 export default function Report() {
-    const { api } = useApp();
+    const { api, fetchOrFallback } = useApp();
     const { id } = useParams();
     const [analysis, setAnalysis] = useState<AnalysisData | null>(null);
     const [loading, setLoading] = useState(true);
@@ -65,26 +66,30 @@ export default function Report() {
 
     const fetchAnalysis = async () => {
         try {
-            const res = await api .get(`/api/analysis/${id}`);
-            if(res.data.success) {
-                if(res.data.analysis.status === "processing") {
-                    // poll for completion
-                    setTimeout(fetchAnalysis, 2000);
-                    return;
-
+            const result = await fetchOrFallback(`/api/analysis/${id}`, (dummyAnalysisData as any[]).find((a) => a._id === id) || dummyWebsiteAnalysis);
+            if (result.success) {
+                // API returns { success, analysis } while fallback provides the analysis object directly
+                if (result.demo) {
+                    setAnalysis(result.data as any);
+                    setError("Loaded demo analysis (server unreachable)");
+                } else if (result.data.analysis) {
+                    if (result.data.analysis.status === "processing") {
+                        setTimeout(fetchAnalysis, 2000);
+                        return;
+                    }
+                    setAnalysis(result.data.analysis);
+                } else {
+                    setError("Analysis not found.");
                 }
-                setAnalysis(res.data.analysis);
-
-            }else {
-                setError("Analysis not found.");
+            } else {
+                setError("Failed to load Analysis");
             }
-
-        } catch {
+        } catch (e) {
+            console.error("Fetch analysis failed:", e);
             setError("Failed to load Analysis");
-
         }
         setLoading(false);
-        
+    };
     };
 
     const getScoreClass = (s: number) => {

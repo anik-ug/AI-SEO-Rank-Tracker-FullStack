@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Target, Plus, RefreshCw, Trash2, TrendingUp, TrendingDown, Minus, ExternalLink, Clock, Loader2, X, Search, Globe, AlertCircle, Eye, EyeOff, Filter, ArrowUpDown } from "lucide-react";
 
 import { useApp } from "../context/AppContext";
+import { dummyRankings } from "../assets/assets";
 
 interface KeywordItem {
     _id: string;
@@ -22,7 +23,7 @@ interface KeywordItem {
 
 export default function RankTracker() {
 
-    const { api } = useApp();
+    const { api, fetchOrFallback } = useApp();
     const [keywords, setKeywords] = useState<KeywordItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [showAddModal, setShowAddModal] = useState(false);
@@ -38,14 +39,14 @@ export default function RankTracker() {
 
     const fetchKeywords = async () => {
         try {
-            const res = await api.get('/api/rank/list');
-            if (res.data.success) {
-                setKeywords(res.data.keywords);
+            const result = await fetchOrFallback('/api/rank/list', dummyRankings as unknown as any);
+            if (result.success) {
+                // when using demo fallback the shape is the array itself, otherwise backend wraps in { success, keywords }
+                if (result.demo) setKeywords(result.data as unknown as KeywordItem[]);
+                else if (result.data.keywords) setKeywords(result.data.keywords);
             }
         } catch (error) {
             console.error("Failed to fetch keywords:", error);
-            
-
         }
         setLoading(false);
        
