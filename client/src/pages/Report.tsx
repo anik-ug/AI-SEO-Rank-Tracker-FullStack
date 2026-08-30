@@ -90,7 +90,7 @@ export default function Report() {
         }
         setLoading(false);
     };
-    };
+
 
     const getScoreClass = (s: number) => {
         if (s >= 80) return "score-good";
