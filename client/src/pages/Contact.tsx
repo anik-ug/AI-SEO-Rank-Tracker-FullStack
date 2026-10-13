@@ -22,7 +22,7 @@ export default function Contact() {
             setLoading(true);
 
             const response = await fetch(
-                `${import.meta.env.VITE_API_URL}/api/contact` || "http://localhost:5001/api/contact",
+                `${import.meta.env.VITE_API_URL}/api/contact`,
                 {
                     method: "POST",
                     headers: {
