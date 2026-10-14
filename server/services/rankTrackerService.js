@@ -1,10 +1,5 @@
 import { chromium } from "playwright-core";
 import Browserbase from "@browserbasehq/sdk";
-import dotenv from "dotenv";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
-
-dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), "../../.env") });
 
 const bb = new Browserbase({
     apiKey: process.env.BROWSERBASE_API_KEY,
