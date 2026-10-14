@@ -1,4 +1,9 @@
 import { GoogleGenAI, Type } from "@google/genai";
+import dotenv from "dotenv";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), "../../.env") });
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
